@@ -20,5 +20,9 @@ app.use('/api/certificates', require('./routes/certificate'));
 
 app.get('/', (req, res) => res.send('API Running'));
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+if (!process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+}
+
+module.exports = app;
