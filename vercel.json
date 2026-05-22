@@ -4,27 +4,12 @@
     {
       "src": "Backend/server.js",
       "use": "@vercel/node"
-    },
-    {
-      "src": "Frontend/my-project/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build",
-        "buildCommand": "CI=false npm run build"
-      }
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "Backend/server.js"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "Backend/server.js"
     }
   ]
 }
