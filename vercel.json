@@ -19,28 +19,11 @@
       "dest": "Backend/server.js"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "Frontend/my-project/build/static/$1"
-    },
-    {
-      "src": "/logo.svg",
-      "dest": "Frontend/my-project/build/logo.svg"
-    },
-    {
-      "src": "/favicon.ico",
-      "dest": "Frontend/my-project/build/favicon.ico"
-    },
-    {
-      "src": "/manifest.json",
-      "dest": "Frontend/my-project/build/manifest.json"
-    },
-    {
-      "src": "/(.*)\\.(js|css|png|jpg|svg|ico|json)",
-      "dest": "Frontend/my-project/build/$1.$2"
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
-      "dest": "Frontend/my-project/build/index.html"
+      "dest": "/index.html"
     }
   ]
 }
