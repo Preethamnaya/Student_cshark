@@ -4,12 +4,43 @@
     {
       "src": "Backend/server.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "Frontend/my-project/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/api/(.*)",
       "dest": "Backend/server.js"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "Frontend/my-project/build/static/$1"
+    },
+    {
+      "src": "/logo.svg",
+      "dest": "Frontend/my-project/build/logo.svg"
+    },
+    {
+      "src": "/favicon.ico",
+      "dest": "Frontend/my-project/build/favicon.ico"
+    },
+    {
+      "src": "/manifest.json",
+      "dest": "Frontend/my-project/build/manifest.json"
+    },
+    {
+      "src": "/(.*)\\.(js|css|png|jpg|svg|ico|json)",
+      "dest": "Frontend/my-project/build/$1.$2"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "Frontend/my-project/build/index.html"
     }
   ]
 }

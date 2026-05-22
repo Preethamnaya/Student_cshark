@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { API_BASE_URL } from '../config';
 import { 
   ArrowLeft, 
   CheckCircle2, 
@@ -46,7 +47,7 @@ const ModuleView = () => {
 
   const fetchModule = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/modules/${id}`);
+      const res = await axios.get(`${API_BASE_URL}/api/modules/${id}`);
       setModule(res.data);
       // Reset video controls
       setActiveVideoIdx(0);
@@ -158,7 +159,7 @@ const ModuleView = () => {
       // Keep record of submitted answers to compare
       setSubmittedAnswers(answers);
 
-      const res = await axios.post(`http://localhost:5000/api/modules/${id}/submit`, {
+      const res = await axios.post(`${API_BASE_URL}/api/modules/${id}/submit`, {
         answers
       });
       setResult(res.data);
@@ -166,7 +167,7 @@ const ModuleView = () => {
       // Auto-download certificate if passed!
       if (res.data.passed && res.data.certificateUrl) {
         setTimeout(() => {
-          const downloadUrl = `http://localhost:5000${res.data.certificateUrl}?token=${localStorage.getItem('token')}`;
+          const downloadUrl = `${API_BASE_URL}${res.data.certificateUrl}?token=${localStorage.getItem('token')}`;
           
           // Trigger file download
           const link = document.createElement('a');
@@ -504,7 +505,7 @@ const ModuleView = () => {
                     {result.passed && result.certificateUrl && (
                       <div className="mt-6 flex flex-col sm:flex-row gap-4 items-center">
                         <a 
-                          href={`http://localhost:5000${result.certificateUrl}&token=${localStorage.getItem('token')}`}
+                          href={`${API_BASE_URL}${result.certificateUrl}&token=${localStorage.getItem('token')}`}
                           target="_blank"
                           rel="noreferrer"
                           className="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white rounded-xl font-bold tracking-wide transition shadow shadow-emerald-500/10 hover:scale-[1.02] active:scale-[0.98] flex items-center gap-2"

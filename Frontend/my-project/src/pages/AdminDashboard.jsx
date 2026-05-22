@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { CheckCircle, XCircle, LogOut } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const AdminDashboard = () => {
   const { logout } = useContext(AuthContext);
@@ -13,7 +14,7 @@ const AdminDashboard = () => {
 
   const fetchStudents = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/admin/users');
+      const res = await axios.get(`${API_BASE_URL}/api/admin/users`);
       setStudents(res.data);
     } catch (error) {
       console.error(error);
@@ -22,7 +23,7 @@ const AdminDashboard = () => {
 
   const handleApprove = async (id) => {
     try {
-      await axios.put(`http://localhost:5000/api/admin/users/${id}/approve`);
+      await axios.put(`${API_BASE_URL}/api/admin/users/${id}/approve`);
       fetchStudents();
     } catch (error) {
       console.error(error);
@@ -32,7 +33,7 @@ const AdminDashboard = () => {
   const handleReject = async (id) => {
     try {
       if(window.confirm('Are you sure you want to reject and delete this user?')){
-         await axios.delete(`http://localhost:5000/api/admin/users/${id}`);
+         await axios.delete(`${API_BASE_URL}/api/admin/users/${id}`);
          fetchStudents();
       }
     } catch (error) {

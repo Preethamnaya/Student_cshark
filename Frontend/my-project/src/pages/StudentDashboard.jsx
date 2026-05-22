@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 import { 
   BookOpen, 
   LogOut, 
@@ -26,7 +27,7 @@ const StudentDashboard = () => {
 
   const fetchModules = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/modules');
+      const res = await axios.get(`${API_BASE_URL}/api/modules`);
       setModules(res.data);
     } catch (error) {
       console.error(error);
@@ -241,7 +242,7 @@ const StudentDashboard = () => {
                     </button>
                     {passed && completed.certificateUrl && (
                       <a 
-                        href={`http://localhost:5000${completed.certificateUrl}?token=${localStorage.getItem('token')}`}
+                        href={`${API_BASE_URL}${completed.certificateUrl}?token=${localStorage.getItem('token')}`}
                         target="_blank"
                         rel="noreferrer"
                         className="flex justify-center items-center px-3.5 py-2.5 bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white rounded-xl transition duration-200 text-sm hover:scale-[1.02] active:scale-[0.98]"

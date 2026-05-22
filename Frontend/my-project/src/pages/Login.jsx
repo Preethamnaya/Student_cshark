@@ -3,6 +3,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { BookOpen, ShieldUser, User, Sparkles } from 'lucide-react';
+import { API_BASE_URL } from '../config';
 
 const Login = () => {
   const { login } = useContext(AuthContext);
@@ -16,7 +17,7 @@ const Login = () => {
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const res = await axios.post('http://localhost:5000/api/auth/google', {
+        const res = await axios.post(`${API_BASE_URL}/api/auth/google`, {
           access_token: tokenResponse.access_token
         });
         login(res.data.token, res.data.user);
@@ -35,7 +36,7 @@ const Login = () => {
   const handleAdminLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/admin', {
+      const res = await axios.post(`${API_BASE_URL}/api/auth/admin`, {
         email,
         password
       });
@@ -48,7 +49,7 @@ const Login = () => {
   const handleMockStudentLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/mock-student', {
+      const res = await axios.post(`${API_BASE_URL}/api/auth/mock-student`, {
         email: studentEmail,
         name: studentName
       });
