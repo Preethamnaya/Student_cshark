@@ -310,7 +310,7 @@ const ModuleView = () => {
                 {activeVideo && (
                   <div className="relative aspect-video w-full bg-black border-b border-slate-850 overflow-hidden shadow-inner group">
                     <iframe
-                      src={`${activeVideo.url}?autoplay=0&controls=1&rel=0&modestbranding=1`}
+                      src={activeVideo.url ? (activeVideo.url.includes('?') ? `${activeVideo.url}&autoplay=0&controls=1&rel=0&modestbranding=1` : `${activeVideo.url}?autoplay=0&controls=1&rel=0&modestbranding=1`) : ''}
                       title={activeVideo.title}
                       className="absolute top-0 left-0 w-full h-full border-0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

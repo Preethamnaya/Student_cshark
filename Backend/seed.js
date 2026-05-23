@@ -17,10 +17,10 @@ const seedData = async () => {
         difficulty: 'Easy',
         studyHours: 12,
         videos: [
-          { title: '1.1 Getting Started with C# and Visual Studio', url: 'https://www.youtube.com/embed/gfkTfcpWqAY', durationMinutes: 7 },
-          { title: '1.2 Understanding the .NET SDK and Runtime (CLR)', url: 'https://www.youtube.com/embed/GhQdlIFylQ8', durationMinutes: 6 },
-          { title: '1.3 Writing Your First C# Console Application', url: 'https://www.youtube.com/embed/S2C1tB_wVEM', durationMinutes: 6 },
-          { title: '1.4 Common Compilation Errors & Setup Diagnostics', url: 'https://www.youtube.com/embed/BM4GGH7yW24', durationMinutes: 5 }
+          { title: '1.1 Getting Started with C# Basics', url: 'https://www.youtube.com/embed/N775KsWQVkw', durationMinutes: 7 },
+          { title: '1.2 Mastering C# Variables & Value Types', url: 'https://www.youtube.com/embed/g-9Jp4dmOBo', durationMinutes: 8 },
+          { title: '1.3 C# Conditional Logic & Statements', url: 'https://www.youtube.com/embed/dJ0S_qY118w', durationMinutes: 8 },
+          { title: '1.4 Loops & Iteration Control Flow', url: 'https://www.youtube.com/embed/iH5v6P37k8E', durationMinutes: 8 }
         ],
         questions: [
           {
@@ -64,10 +64,10 @@ const seedData = async () => {
         difficulty: 'Easy',
         studyHours: 14,
         videos: [
-          { title: '2.1 Mastering Conditional Statements and Switch Expressions', url: 'https://www.youtube.com/embed/3U8gB0yQ2vY', durationMinutes: 7 },
-          { title: '2.2 Advanced Loop Operations: For, Foreach, and While', url: 'https://www.youtube.com/embed/z4uB5N3WcZc', durationMinutes: 8 },
-          { title: '2.3 Single, Multidimensional, and Jagged Arrays', url: 'https://www.youtube.com/embed/w74-xL3o8-c', durationMinutes: 9 },
-          { title: '2.4 Safe Iteration Guards and Memory Performance in Loops', url: 'https://www.youtube.com/embed/Yt-w6Yt4L9o', durationMinutes: 6 }
+          { title: '2.1 Single, Multidimensional & Jagged Arrays', url: 'https://www.youtube.com/embed/9ozOSKCiO0I', durationMinutes: 9 },
+          { title: '2.2 C# Methods, Functions & Parameters', url: 'https://www.youtube.com/embed/qY_D2a8k71I', durationMinutes: 8 },
+          { title: '2.3 Object Classes & Instances in C#', url: 'https://www.youtube.com/embed/4n29O-H-1sE', durationMinutes: 9 },
+          { title: '2.4 Modern .NET Architecture in 100 Seconds', url: 'https://www.youtube.com/embed/r6c-g4Q9YjA', durationMinutes: 6 }
         ],
         questions: [
           {
@@ -111,10 +111,10 @@ const seedData = async () => {
         difficulty: 'Medium',
         studyHours: 18,
         videos: [
-          { title: '3.1 Object-Oriented Paradigm: Classes, Structs, and Instantiation', url: 'https://www.youtube.com/embed/U3aXWiz8O_k', durationMinutes: 8 },
-          { title: '3.2 Polymorphism: Virtual, Override, and Sealed Modifiers', url: 'https://www.youtube.com/embed/3p5bZc7t_gY', durationMinutes: 9 },
-          { title: '3.3 Designing Architectural Layouts: Abstract Classes vs Interfaces', url: 'https://www.youtube.com/embed/j4_vF8sR3Qc', durationMinutes: 10 },
-          { title: '3.4 Object Memory Allocations: Boxing, Unboxing, and Performance', url: 'https://www.youtube.com/embed/oP2d-oZsc1E', durationMinutes: 6 }
+          { title: '3.1 Object-Oriented Programming (OOP) Fundamentals', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=7200', durationMinutes: 8 },
+          { title: '3.2 Polymorphism: Override & sealed Modifiers', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=8100', durationMinutes: 9 },
+          { title: '3.3 Interfaces & Abstract Classes Architecture', url: 'https://www.youtube.com/embed/7Z4z1P1B6s8', durationMinutes: 10 },
+          { title: '3.4 Objects Allocation, Boxing & Performance', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=9900', durationMinutes: 6 }
         ],
         questions: [
           {
@@ -158,10 +158,10 @@ const seedData = async () => {
         difficulty: 'Medium',
         studyHours: 16,
         videos: [
-          { title: '4.1 Generics: Designing Type-Safe Reusable Classes and Methods', url: 'https://www.youtube.com/embed/4G5gDk8t-3c', durationMinutes: 7 },
-          { title: '4.2 Collections Architecture: Lists, Dictionaries, and HashSets', url: 'https://www.youtube.com/embed/8-W7WzB2q2c', durationMinutes: 8 },
-          { title: '4.3 Deep Dive into LINQ (Language Integrated Query) Expressions', url: 'https://www.youtube.com/embed/1Bdf9M-tUfI', durationMinutes: 9 },
-          { title: '4.4 Deferring LINQ Execution: Yield Operators and Immediate Materialization', url: 'https://www.youtube.com/embed/D3sR1uD03wE', durationMinutes: 7 }
+          { title: '4.1 Designing Reusable Type-Safe C# Generics', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=10800', durationMinutes: 7 },
+          { title: '4.2 Generic Collections: Lists & Dictionaries', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=11700', durationMinutes: 8 },
+          { title: '4.3 Language Integrated Query (LINQ) Expressions', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=12600', durationMinutes: 9 },
+          { title: '4.4 Deferred LINQ Queries & yield Operators', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=13500', durationMinutes: 7 }
         ],
         questions: [
           {
@@ -205,10 +205,10 @@ const seedData = async () => {
         difficulty: 'Hard',
         studyHours: 12,
         videos: [
-          { title: '5.1 Advanced Exception Handling: Filters, Guards, and Catch Rules', url: 'https://www.youtube.com/embed/2_3v9z7_z4Y', durationMinutes: 6 },
-          { title: '5.2 Implementing Cleanups: IDisposable and the using Statement', url: 'https://www.youtube.com/embed/sYv_gCqR2Xw', durationMinutes: 8 },
-          { title: '5.3 File System Management and Asynchronous Stream Writers', url: 'https://www.youtube.com/embed/3Q9g5B8yZ4c', durationMinutes: 7 },
-          { title: '5.4 System Streams and Unmanaged Memory Resources', url: 'https://www.youtube.com/embed/uGv8e578B8c', durationMinutes: 6 }
+          { title: '5.1 Exception Handling: catch & try Filters', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=14400', durationMinutes: 6 },
+          { title: '5.2 Cleanups: using Declarations & IDisposable', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=15000', durationMinutes: 8 },
+          { title: '5.3 File System I/O and Asynchronous Write Streams', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=15600', durationMinutes: 7 },
+          { title: '5.4 Working with Managed & Unmanaged System Streams', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=16000', durationMinutes: 6 }
         ],
         questions: [
           {
@@ -252,10 +252,10 @@ const seedData = async () => {
         difficulty: 'Hard',
         studyHours: 13,
         videos: [
-          { title: '6.1 Introduction to Multithreading, ThreadPools, and Task Patterns', url: 'https://www.youtube.com/embed/2_8z9z7_z4Y', durationMinutes: 8 },
-          { title: '6.2 Mastering Tasks: Return Values, Chaining, and Thread Contexts', url: 'https://www.youtube.com/embed/F42jW7jZ8F0', durationMinutes: 7 },
-          { title: '6.3 Task Synchronization: Avoiding Deadlocks and .Result Misuse', url: 'https://www.youtube.com/embed/4G5gDk8t-3c', durationMinutes: 9 },
-          { title: '6.4 Scaling Concurrency: Task.WhenAll and Parallel Parallel loops', url: 'https://www.youtube.com/embed/D3sR1uD03wE', durationMinutes: 8 }
+          { title: '6.1 Multithreading, threadPool & Task Patterns', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=16200', durationMinutes: 8 },
+          { title: '6.2 Managing Asynchronous Tasks & await Operators', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=16500', durationMinutes: 7 },
+          { title: '6.3 Avoiding Task Deadlocks and threadPool Starvation', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=16800', durationMinutes: 9 },
+          { title: '6.4 Concurrency: Task.WhenAll & parallel Execution', url: 'https://www.youtube.com/embed/GhQdlIFylQ8?start=17000', durationMinutes: 8 }
         ],
         questions: [
           {
