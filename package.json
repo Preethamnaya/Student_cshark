@@ -1,0 +1,11 @@
+{
+  "name": "cshark-fullstack",
+  "version": "1.0.0",
+  "scripts": {
+    "install-frontend": "cd Frontend/my-project && npm install --legacy-peer-deps",
+    "install-backend": "cd Backend && npm install",
+    "build-frontend": "cd Frontend/my-project && npm run build",
+    "build": "npm run install-frontend && npm run build-frontend && npm run install-backend",
+    "start": "node Backend/server.js"
+  }
+}
