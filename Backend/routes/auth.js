@@ -81,14 +81,18 @@ router.post('/mock-student', async (req, res) => {
     let user = await User.findOne({ email: studentEmail });
 
     if (!user) {
-      // Create new student, status is 'pending' by default
+      // Create new student, status is approved by default for mock bypass
       user = new User({
         name: studentName,
         email: studentEmail,
         googleId,
         role: 'student',
-        status: 'pending'
+        status: 'approved'
       });
+      await user.save();
+    } else if (user.status !== 'approved') {
+      // Auto-approve existing mock student for developer convenience
+      user.status = 'approved';
       await user.save();
     }
 
