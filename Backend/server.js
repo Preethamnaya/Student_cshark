@@ -24,7 +24,7 @@ app.use('/api/modules', require('./routes/module'));
 app.use('/api/certificates', require('./routes/certificate'));
 
 // Catch-all route to serve React frontend SPA index.html for client-side routing
-app.get('/:all*', (req, res) => {
+app.get('/{*splat}', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../Frontend/my-project/build', 'index.html'));
 });
 
