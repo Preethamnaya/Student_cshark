@@ -4,6 +4,89 @@
 
 @layer base {
   body {
-    @apply bg-slate-50 text-slate-900 antialiased;
+    @apply bg-slate-950 text-slate-100 antialiased;
   }
+}
+
+/* Custom Premium HSL Glow & Keyframe Animations */
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-12px) scale(1.03);
+    opacity: 0.95;
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Animated Glassmorphic Utility Classes */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 8s ease-in-out infinite;
+  animation-delay: 2.5s;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 12s ease-in-out infinite;
+}
+
+.glass-glow-indigo {
+  box-shadow: 0 0 40px -10px rgba(99, 102, 241, 0.15);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-glow-indigo:hover {
+  box-shadow: 0 0 50px 0px rgba(99, 102, 241, 0.35);
+  border-color: rgba(99, 102, 241, 0.6);
+  transform: translateY(-6px) scale(1.02);
+  background-color: rgba(15, 23, 42, 0.7);
+}
+
+.glass-glow-emerald {
+  box-shadow: 0 0 40px -10px rgba(16, 185, 129, 0.15);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-glow-emerald:hover {
+  box-shadow: 0 0 50px 0px rgba(16, 185, 129, 0.35);
+  border-color: rgba(16, 185, 129, 0.6);
+  transform: translateY(-6px) scale(1.02);
+  background-color: rgba(15, 23, 42, 0.7);
+}
+
+.glass-glow-amber {
+  box-shadow: 0 0 40px -10px rgba(245, 158, 11, 0.15);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-glow-amber:hover {
+  box-shadow: 0 0 50px 0px rgba(245, 158, 11, 0.35);
+  border-color: rgba(245, 158, 11, 0.6);
+  transform: translateY(-6px) scale(1.02);
+  background-color: rgba(15, 23, 42, 0.7);
 }

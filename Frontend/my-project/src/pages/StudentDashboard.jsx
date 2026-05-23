@@ -55,8 +55,8 @@ const StudentDashboard = () => {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white relative overflow-hidden">
       {/* Decorative Background Glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-900/10 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-900/10 blur-[120px] pointer-events-none" />
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-900/10 blur-[120px] pointer-events-none animate-pulse-slow" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-900/10 blur-[120px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '4s' }} />
 
       {/* Main Container */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 relative z-10">
@@ -92,7 +92,7 @@ const StudentDashboard = () => {
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           
           {/* Card 1: Hours Completed */}
-          <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800/80 p-6 rounded-2xl flex items-center justify-between shadow-lg relative group overflow-hidden">
+          <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800/80 p-6 rounded-2xl flex items-center justify-between shadow-lg relative group overflow-hidden glass-glow-indigo">
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="space-y-2 relative z-10">
               <span className="text-xs font-semibold tracking-wider text-indigo-400 uppercase">Training Duration</span>
@@ -113,7 +113,7 @@ const StudentDashboard = () => {
           </div>
 
           {/* Card 2: Certificates Unlocked */}
-          <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800/80 p-6 rounded-2xl flex items-center justify-between shadow-lg relative group overflow-hidden">
+          <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800/80 p-6 rounded-2xl flex items-center justify-between shadow-lg relative group overflow-hidden glass-glow-emerald">
             <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="space-y-2 relative z-10">
               <span className="text-xs font-semibold tracking-wider text-emerald-400 uppercase">Credentials Unlocked</span>
@@ -134,7 +134,7 @@ const StudentDashboard = () => {
           </div>
 
           {/* Card 3: Overall Progress */}
-          <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800/80 p-6 rounded-2xl flex items-center justify-between shadow-lg relative group overflow-hidden">
+          <div className="bg-slate-900/50 backdrop-blur-xl border border-slate-800/80 p-6 rounded-2xl flex items-center justify-between shadow-lg relative group overflow-hidden glass-glow-amber">
             <div className="absolute inset-0 bg-gradient-to-r from-rose-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="space-y-2 relative z-10">
               <span className="text-xs font-semibold tracking-wider text-rose-400 uppercase">Total Progress</span>
@@ -185,7 +185,7 @@ const StudentDashboard = () => {
             return (
               <div 
                 key={module._id} 
-                className="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 hover:border-indigo-500/30 rounded-2xl overflow-hidden hover:shadow-lg hover:shadow-indigo-500/5 transition duration-300 flex flex-col group"
+                className="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 rounded-2xl overflow-hidden transition duration-300 flex flex-col group glass-glow-indigo"
               >
                 <div className="p-6 flex-1 flex flex-col">
                   {/* Module Header Elements */}
