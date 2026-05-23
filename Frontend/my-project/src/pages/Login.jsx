@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import { BookOpen, ShieldUser, User, Sparkles } from 'lucide-react';
+import { BookOpen, ShieldUser, Terminal, Sparkles, AlertCircle } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 
 const Login = () => {
@@ -13,9 +13,11 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [studentName, setStudentName] = useState('');
   const [studentEmail, setStudentEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleGoogleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
+      setLoading(true);
       try {
         const res = await axios.post(`${API_BASE_URL}/api/auth/google`, {
           access_token: tokenResponse.access_token
@@ -24,6 +26,8 @@ const Login = () => {
       } catch (error) {
         console.error('Google Login Failed', error);
         alert('Google Login Failed');
+      } finally {
+        setLoading(false);
       }
     },
     onError: (error) => {
@@ -35,6 +39,7 @@ const Login = () => {
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await axios.post(`${API_BASE_URL}/api/auth/admin`, {
         email,
@@ -43,11 +48,14 @@ const Login = () => {
       login(res.data.token, res.data.user);
     } catch (error) {
       alert('Invalid Admin Credentials');
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleMockStudentLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await axios.post(`${API_BASE_URL}/api/auth/mock-student`, {
         email: studentEmail,
@@ -56,34 +64,54 @@ const Login = () => {
       login(res.data.token, res.data.user);
     } catch (error) {
       alert('Mock Student Login Failed');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-900 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-slate-800 p-10 rounded-2xl shadow-2xl border border-slate-700">
+    <div className="flex items-center justify-center min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white relative overflow-hidden px-4 sm:px-6 lg:px-8">
+      
+      {/* Dynamic Floating Background Gradient Orbs */}
+      <div className="absolute top-[-20%] left-[-15%] w-[60%] h-[60%] rounded-full bg-indigo-600/10 blur-[150px] pointer-events-none animate-pulse-slow" />
+      <div className="absolute bottom-[-20%] right-[-15%] w-[60%] h-[60%] rounded-full bg-purple-900/10 blur-[150px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '5s' }} />
+
+      {/* Frosted Glassmorphic Login Container */}
+      <div className="max-w-md w-full space-y-8 bg-slate-900/40 backdrop-blur-2xl p-8 sm:p-10 rounded-3xl shadow-2xl border border-slate-800/80 relative z-10 glass-glow-indigo">
+        
+        {/* Insignia / Brand header */}
         <div className="text-center">
-          <BookOpen className="mx-auto h-12 w-12 text-blue-500" />
-          <h2 className="mt-6 text-3xl font-extrabold text-white">NIE C-Shark</h2>
-          <p className="mt-2 text-sm text-slate-400">
-            Student Assessment Platform
+          <div className="mx-auto w-16 h-16 bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-500 rounded-2xl shadow-xl shadow-indigo-500/20 flex items-center justify-center ring-1 ring-indigo-400/30 transform hover:rotate-12 transition-transform duration-300">
+            <BookOpen className="h-9 w-9 text-white animate-pulse" />
+          </div>
+          
+          <div className="mt-6 flex items-center justify-center gap-2">
+            <h2 className="text-3xl font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+              NIE C-Shark
+            </h2>
+            <Sparkles className="w-5 h-5 text-indigo-400 animate-bounce" />
+          </div>
+          <p className="mt-2 text-sm text-slate-400 font-medium">
+            Professional C# Software Assessment Academy
           </p>
         </div>
 
         {isAdminMode ? (
           <form className="mt-8 space-y-6" onSubmit={handleAdminLogin}>
             <div className="text-center">
-              <span className="px-3 py-1 text-xs font-semibold text-amber-400 bg-amber-400/10 rounded-full border border-amber-400/20">
+              <span className="px-3.5 py-1 text-xs font-bold text-purple-400 bg-purple-400/10 rounded-full border border-purple-400/20 tracking-wide uppercase">
                 Admin Console
               </span>
             </div>
-            <div className="rounded-md shadow-sm -space-y-px">
+            
+            <div className="space-y-4">
               <div>
                 <input
                   type="email"
                   required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-slate-600 bg-slate-700 text-white placeholder-slate-400 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  placeholder="Admin Email"
+                  disabled={loading}
+                  className="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-purple-500/50 neon-border-purple text-sm transition-all"
+                  placeholder="Admin Email Address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -92,8 +120,9 @@ const Login = () => {
                 <input
                   type="password"
                   required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-slate-600 bg-slate-700 text-white placeholder-slate-400 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  placeholder="Password"
+                  disabled={loading}
+                  className="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-purple-500/50 neon-border-purple text-sm transition-all"
+                  placeholder="Console Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -103,11 +132,13 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none transition-colors"
+                disabled={loading}
+                className="w-full flex justify-center py-3 px-4 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white font-bold rounded-xl shadow-lg shadow-purple-600/10 transition-all hover:scale-[1.02] active:scale-[0.98] duration-200 text-sm"
               >
-                Sign in as Admin
+                {loading ? "Authenticating Console..." : "Access Administrator Suite"}
               </button>
             </div>
+            
             <div className="text-center">
               <button
                 type="button"
@@ -115,50 +146,65 @@ const Login = () => {
                   setIsAdminMode(false);
                   setIsBypassMode(false);
                 }}
-                className="text-sm text-blue-400 hover:text-blue-300"
+                className="text-xs font-semibold text-slate-500 hover:text-slate-300 transition-colors"
               >
-                Back to Sign In
+                Return to Student Portal
               </button>
             </div>
           </form>
         ) : isBypassMode ? (
           <form className="mt-8 space-y-6" onSubmit={handleMockStudentLogin}>
             <div className="text-center">
-              <span className="px-3 py-1 text-xs font-semibold text-emerald-400 bg-emerald-400/10 rounded-full border border-emerald-400/20">
-                Offline Bypass Mode
+              <span className="px-3.5 py-1 text-xs font-bold text-emerald-400 bg-emerald-400/10 rounded-full border border-emerald-400/20 tracking-wide uppercase">
+                Developer Bypass Active
               </span>
             </div>
-            <div className="rounded-md shadow-sm -space-y-px">
-              <div>
-                <input
-                  type="text"
-                  required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-slate-600 bg-slate-700 text-white placeholder-slate-400 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  placeholder="Student Name (e.g., Jane Doe)"
-                  value={studentName}
-                  onChange={(e) => setStudentName(e.target.value)}
-                />
+            
+            {/* Terminal Styling for bypass form */}
+            <div className="bg-slate-950/90 border border-slate-800 rounded-2xl p-5 font-mono text-xs text-indigo-300 space-y-4 shadow-inner">
+              <div className="flex items-center gap-2 pb-2.5 border-b border-slate-900 text-slate-500">
+                <Terminal className="w-4 h-4 text-emerald-400 animate-pulse" />
+                <span>MOCK_STUDENT_BYPASS_SHELL</span>
               </div>
-              <div>
-                <input
-                  type="email"
-                  required
-                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-slate-600 bg-slate-700 text-white placeholder-slate-400 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  placeholder="Student Email (e.g., student@nie.edu.in)"
-                  value={studentEmail}
-                  onChange={(e) => setStudentEmail(e.target.value)}
-                />
+              
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-slate-500 mb-1.5">&gt; INPUT_STUDENT_NAME:</label>
+                  <input
+                    type="text"
+                    required
+                    disabled={loading}
+                    className="w-full bg-slate-900/60 border border-slate-850 px-3.5 py-2.5 rounded-xl text-white font-mono placeholder-slate-700 focus:outline-none focus:border-emerald-500/50 neon-border-indigo text-xs"
+                    placeholder="Enter Student Name..."
+                    value={studentName}
+                    onChange={(e) => setStudentName(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-500 mb-1.5">&gt; INPUT_STUDENT_EMAIL:</label>
+                  <input
+                    type="email"
+                    required
+                    disabled={loading}
+                    className="w-full bg-slate-900/60 border border-slate-850 px-3.5 py-2.5 rounded-xl text-white font-mono placeholder-slate-700 focus:outline-none focus:border-emerald-500/50 neon-border-indigo text-xs"
+                    placeholder="Enter Student Email..."
+                    value={studentEmail}
+                    onChange={(e) => setStudentEmail(e.target.value)}
+                  />
+                </div>
               </div>
             </div>
 
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none transition-colors"
+                disabled={loading}
+                className="w-full flex justify-center py-3 px-4 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/10 transition-all hover:scale-[1.02] active:scale-[0.98] duration-200 text-sm"
               >
-                Access Platform as Student
+                {loading ? "Allocating Mock Profile..." : "Execute Bypass & Log In"}
               </button>
             </div>
+            
             <div className="text-center">
               <button
                 type="button"
@@ -166,21 +212,24 @@ const Login = () => {
                   setIsAdminMode(false);
                   setIsBypassMode(false);
                 }}
-                className="text-sm text-blue-400 hover:text-blue-300"
+                className="text-xs font-semibold text-slate-500 hover:text-slate-300 transition-colors"
               >
-                Back to Sign In
+                Return to Student Portal
               </button>
             </div>
           </form>
         ) : (
           <div className="mt-8 space-y-6 flex flex-col items-center">
-            <div className="w-full flex justify-center">
+            
+            {/* Real Google OAuth Button */}
+            <div className="w-full">
               <button
                 type="button"
                 onClick={() => handleGoogleLogin()}
-                className="w-full flex items-center justify-center gap-3 py-3 px-5 rounded-xl text-white font-semibold bg-slate-800 hover:bg-slate-700/80 border border-slate-700 hover:border-blue-500/50 shadow-lg shadow-black/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] group relative overflow-hidden focus:outline-none"
+                disabled={loading}
+                className="w-full flex items-center justify-center gap-3 py-3.5 px-5 rounded-xl text-slate-300 hover:text-white font-semibold bg-slate-950 hover:bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 shadow-lg shadow-black/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] group relative overflow-hidden focus:outline-none"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                 <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 relative z-10" viewBox="0 0 24 24">
                   <path
                     fill="#4285F4"
@@ -199,31 +248,42 @@ const Login = () => {
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                   />
                 </svg>
-                <span className="relative z-10 font-medium tracking-wide">Sign in with Google</span>
+                <span className="relative z-10 font-bold tracking-wide text-sm">{loading ? "Launching OAuth Session..." : "Sign in with Google"}</span>
               </button>
             </div>
             
-            <div className="w-full border-t border-slate-700 my-4"></div>
+            <div className="w-full flex items-center justify-between gap-4 py-2">
+              <div className="flex-1 h-px bg-slate-800" />
+              <span className="text-[10px] uppercase font-bold tracking-widest text-slate-600">Developer Options</span>
+              <div className="flex-1 h-px bg-slate-800" />
+            </div>
 
+            {/* Quick Developer Bypass Links */}
             <div className="flex flex-col sm:flex-row gap-4 w-full justify-between items-center text-center">
               <button
                 type="button"
                 onClick={() => setIsBypassMode(true)}
-                className="flex items-center justify-center text-sm text-emerald-400 hover:text-emerald-300 transition-colors"
+                className="flex items-center justify-center text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
               >
-                <Sparkles className="w-4 h-4 mr-2" /> Developer Bypass
+                <Sparkles className="w-4 h-4 mr-1.5" /> Developer Bypass
               </button>
               
               <button
                 type="button"
                 onClick={() => setIsAdminMode(true)}
-                className="flex items-center justify-center text-sm text-slate-400 hover:text-white transition-colors"
+                className="flex items-center justify-center text-xs font-semibold text-slate-500 hover:text-slate-300 transition-colors"
               >
-                <ShieldUser className="w-4 h-4 mr-2" /> Admin Access
+                <ShieldUser className="w-4 h-4 mr-1.5" /> Admin Console
               </button>
             </div>
           </div>
         )}
+        
+        {/* Bottom decorative academic note */}
+        <div className="pt-6 mt-6 border-t border-slate-800/80 text-[10px] text-center text-slate-500 flex items-center justify-center gap-1.5">
+          <AlertCircle className="w-3.5 h-3.5 text-indigo-500/50" />
+          <span>Authorized student and developer console only.</span>
+        </div>
       </div>
     </div>
   );

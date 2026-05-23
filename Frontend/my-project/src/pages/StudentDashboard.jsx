@@ -19,10 +19,27 @@ import {
 const StudentDashboard = () => {
   const { user, logout } = useContext(AuthContext);
   const [modules, setModules] = useState([]);
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [isExiting, setIsExiting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchModules();
+    
+    // Start exit animation after 3.4 seconds
+    const exitTimer = setTimeout(() => {
+      setIsExiting(true);
+    }, 3405);
+
+    // Completely unmount the welcome modal after 4 seconds
+    const hideTimer = setTimeout(() => {
+      setShowWelcome(false);
+    }, 4000);
+
+    return () => {
+      clearTimeout(exitTimer);
+      clearTimeout(hideTimer);
+    };
   }, []);
 
   const fetchModules = async () => {
@@ -54,6 +71,44 @@ const StudentDashboard = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white relative overflow-hidden">
+      {/* Dynamic Pop-up Welcome Modal */}
+      {showWelcome && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+          <div className={`relative max-w-lg w-full bg-slate-900/95 border border-slate-800/80 p-8 rounded-3xl shadow-2xl flex flex-col items-center text-center overflow-hidden ${isExiting ? 'animate-welcome-out' : 'animate-welcome-in'}`}>
+            {/* Pulsing glow background inside the modal */}
+            <div className="absolute top-[-50%] left-[-50%] w-[200%] h-[200%] rounded-full bg-indigo-500/5 blur-[80px] pointer-events-none" />
+            
+            {/* Double ring layout with logo badge inside */}
+            <div className="relative mb-6">
+              <div className="absolute inset-0 bg-indigo-500/20 blur-xl rounded-full animate-pulse-slow" />
+              <div className="relative p-5 bg-gradient-to-tr from-indigo-600 to-indigo-500 rounded-full shadow-lg shadow-indigo-500/30 border border-indigo-400/20">
+                <GraduationCap className="w-12 h-12 text-white animate-bounce" />
+              </div>
+              <div className="absolute -top-1 -right-1 p-1 bg-amber-500/90 text-slate-950 rounded-full shadow-md">
+                <Sparkles className="w-4 h-4 fill-slate-950" />
+              </div>
+            </div>
+
+            <h2 className="text-3xl font-extrabold tracking-tight text-white mb-3">
+              Welcome back to <span className="bg-gradient-to-r from-indigo-400 to-emerald-400 bg-clip-text text-transparent">C-Shark Academy</span>
+            </h2>
+            
+            <p className="text-xl font-medium text-indigo-200 mb-4">
+              {user?.name || 'Developer'}
+            </p>
+
+            <p className="text-sm text-slate-400 max-w-md">
+              Your customized software environment is fully compiled and ready. Let's write some high-performance C# code today!
+            </p>
+
+            <div className="mt-8 flex gap-1.5 justify-center">
+              <div className="w-2 h-2 rounded-full bg-indigo-500 animate-ping" />
+              <span className="text-[11px] font-mono text-slate-500 tracking-widest uppercase">System Bypass Authorized</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Decorative Background Glows */}
       <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-900/10 blur-[120px] pointer-events-none animate-pulse-slow" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-emerald-900/10 blur-[120px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '4s' }} />
@@ -257,6 +312,33 @@ const StudentDashboard = () => {
             );
           })}
         </div>
+
+        {/* Academic Mentorship & Technical Support Widget */}
+        <footer className="mt-16 bg-slate-900/30 backdrop-blur-xl border border-slate-800/60 p-8 rounded-3xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-indigo-900/5 blur-[100px] pointer-events-none group-hover:bg-indigo-900/10 transition-colors duration-500" />
+          <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="p-2 bg-indigo-500/10 text-indigo-400 rounded-xl">
+                  <Sparkles className="w-5 h-5 text-indigo-400" />
+                </div>
+                <h3 className="text-lg font-bold text-white">Academic Mentorship & Technical Support</h3>
+              </div>
+              <p className="text-slate-400 text-sm max-w-2xl">
+                Stuck on a tricky C# architectural constraint or intermediate language compile puzzle? Reach out to our program director for 1-on-1 mentorship.
+              </p>
+            </div>
+            
+            <a 
+              href="mailto:aprretham@gmail.com" 
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-900 to-slate-850 hover:from-slate-850 hover:to-slate-800 text-indigo-300 hover:text-white rounded-2xl border border-slate-800 hover:border-indigo-500/40 transition duration-300 font-semibold text-sm shadow-md gap-2"
+            >
+              Contact Support: aprretham@gmail.com
+              <ArrowRight className="w-4 h-4 text-indigo-400" />
+            </a>
+          </div>
+        </footer>
+
       </div>
     </div>
   );

@@ -32,6 +32,7 @@ const ModuleView = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [videoDuration, setVideoDuration] = useState(120); // Default 120 seconds for demo simulation speed
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const activeVideo = module?.videos?.[activeVideoIdx];
   
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
@@ -65,6 +66,12 @@ const ModuleView = () => {
       navigate('/dashboard');
     }
   };
+
+  useEffect(() => {
+    if (activeVideo) {
+      setVideoDuration(activeVideo.durationMinutes * 60 || 120);
+    }
+  }, [activeVideo]);
 
   // Video progress ticking simulator
   useEffect(() => {
@@ -298,6 +305,19 @@ const ModuleView = () => {
                     <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
                   </div>
                 </div>
+
+                {/* Embedded YouTube video lesson player */}
+                {activeVideo && (
+                  <div className="relative aspect-video w-full bg-black border-b border-slate-850 overflow-hidden shadow-inner group">
+                    <iframe
+                      src={`${activeVideo.url}?autoplay=0&controls=1&rel=0&modestbranding=1`}
+                      title={activeVideo.title}
+                      className="absolute top-0 left-0 w-full h-full border-0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                )}
 
                 {/* Simulated C# Code Runner Canvas */}
                 <div className="bg-[#0b0f19] p-6 font-mono text-sm leading-relaxed overflow-x-auto min-h-[220px] max-h-[300px] border-b border-slate-850 text-indigo-300 shadow-inner">
