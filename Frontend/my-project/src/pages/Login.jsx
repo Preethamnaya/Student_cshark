@@ -2,11 +2,14 @@ import React, { useState, useContext } from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import { BookOpen, ShieldUser, Terminal, Sparkles, AlertCircle } from 'lucide-react';
+import { ThemeContext } from '../context/ThemeContext';
+import ThemeToggle from '../components/ThemeToggle';
+import { BookOpen, ShieldUser, Terminal, Sparkles, AlertCircle, GraduationCap } from 'lucide-react';
 import { API_BASE_URL } from '../config';
 
 const Login = () => {
   const { login } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const [isAdminMode, setIsAdminMode] = useState(false);
   const [isBypassMode, setIsBypassMode] = useState(false);
   const [email, setEmail] = useState('');
@@ -70,28 +73,47 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white relative overflow-hidden px-4 sm:px-6 lg:px-8">
+    <div className="flex items-center justify-center min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans selection:bg-indigo-500 selection:text-white relative overflow-hidden px-4 sm:px-6 lg:px-8 theme-transition">
       
       {/* Dynamic Floating Background Gradient Orbs */}
-      <div className="absolute top-[-20%] left-[-15%] w-[60%] h-[60%] rounded-full bg-indigo-600/10 blur-[150px] pointer-events-none animate-pulse-slow" />
-      <div className="absolute bottom-[-20%] right-[-15%] w-[60%] h-[60%] rounded-full bg-purple-900/10 blur-[150px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '5s' }} />
+      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-500/10 dark:bg-indigo-600/10 blur-[130px] pointer-events-none animate-blob-1" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-rose-500/10 dark:bg-purple-900/10 blur-[130px] pointer-events-none animate-blob-2" />
+      
+      {/* Decorative Grid Overlay */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30 dark:opacity-20 pointer-events-none" />
+
+      {/* Floating Theme Selector top right */}
+      <div className="absolute top-6 right-6 z-20">
+        <ThemeToggle />
+      </div>
 
       {/* Frosted Glassmorphic Login Container */}
-      <div className="max-w-md w-full space-y-8 bg-slate-900/40 backdrop-blur-2xl p-8 sm:p-10 rounded-3xl shadow-2xl border border-slate-800/80 relative z-10 glass-glow-indigo">
+      <div className="max-w-md w-full space-y-8 bg-white/70 dark:bg-slate-900/40 backdrop-blur-2xl p-8 sm:p-10 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-800/80 relative z-10 glass-glow-indigo theme-transition">
         
-        {/* Insignia / Brand header */}
+        {/* Layered Geometric brand logo */}
         <div className="text-center">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-500 rounded-2xl shadow-xl shadow-indigo-500/20 flex items-center justify-center ring-1 ring-indigo-400/30 transform hover:rotate-12 transition-transform duration-300">
-            <BookOpen className="h-9 w-9 text-white animate-pulse" />
+          <div className="relative mx-auto w-20 h-20 flex items-center justify-center animate-float">
+            {/* Spinning decorative geometric background rings */}
+            <div className="absolute inset-0 border-2 border-dashed border-indigo-500/20 dark:border-indigo-400/30 rounded-full animate-rotate-slow" />
+            <div className="absolute inset-2 border border-slate-300 dark:border-slate-800 rounded-full" />
+            <div className="absolute inset-0 bg-indigo-500/10 dark:bg-indigo-500/5 blur-xl rounded-full animate-pulse-slow" />
+            
+            {/* Double-layered glowing logo shield */}
+            <div className="relative w-14 h-14 bg-gradient-to-tr from-indigo-600 via-indigo-500 to-purple-500 rounded-2xl shadow-lg shadow-indigo-500/30 dark:shadow-indigo-500/20 flex items-center justify-center ring-1 ring-indigo-400/20">
+              <GraduationCap className="h-8 w-8 text-white animate-pulse" />
+            </div>
+            
+            <div className="absolute -top-1 -right-1 p-1 bg-amber-500 text-slate-950 rounded-full shadow-md">
+              <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
+            </div>
           </div>
           
           <div className="mt-6 flex items-center justify-center gap-2">
-            <h2 className="text-3xl font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
-              NIE C-Shark
+            <h2 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white">
+              C-Shark Academy
             </h2>
-            <Sparkles className="w-5 h-5 text-indigo-400 animate-bounce" />
           </div>
-          <p className="mt-2 text-sm text-slate-400 font-medium">
+          <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 font-medium">
             Professional C# Software Assessment Academy
           </p>
         </div>
@@ -99,7 +121,7 @@ const Login = () => {
         {isAdminMode ? (
           <form className="mt-8 space-y-6" onSubmit={handleAdminLogin}>
             <div className="text-center">
-              <span className="px-3.5 py-1 text-xs font-bold text-purple-400 bg-purple-400/10 rounded-full border border-purple-400/20 tracking-wide uppercase">
+              <span className="px-3.5 py-1 text-xs font-bold text-purple-600 bg-purple-500/10 dark:text-purple-400 dark:bg-purple-400/10 rounded-full border border-purple-200 dark:border-purple-400/20 tracking-wide uppercase">
                 Admin Console
               </span>
             </div>
@@ -110,7 +132,7 @@ const Login = () => {
                   type="email"
                   required
                   disabled={loading}
-                  className="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-purple-500/50 neon-border-purple text-sm transition-all"
+                  className="w-full px-4 py-3 bg-white/80 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-purple-500/50 neon-border-purple text-sm transition-all"
                   placeholder="Admin Email Address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -121,7 +143,7 @@ const Login = () => {
                   type="password"
                   required
                   disabled={loading}
-                  className="w-full px-4 py-3 bg-slate-950/80 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-purple-500/50 neon-border-purple text-sm transition-all"
+                  className="w-full px-4 py-3 bg-white/80 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-purple-500/50 neon-border-purple text-sm transition-all"
                   placeholder="Console Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -133,7 +155,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-3 px-4 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white font-bold rounded-xl shadow-lg shadow-purple-600/10 transition-all hover:scale-[1.02] active:scale-[0.98] duration-200 text-sm"
+                className="w-full flex justify-center py-3.5 px-4 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white font-bold rounded-xl shadow-lg shadow-purple-600/10 transition-all hover:scale-[1.02] active:scale-[0.98] duration-200 text-sm"
               >
                 {loading ? "Authenticating Console..." : "Access Administrator Suite"}
               </button>
@@ -146,7 +168,7 @@ const Login = () => {
                   setIsAdminMode(false);
                   setIsBypassMode(false);
                 }}
-                className="text-xs font-semibold text-slate-500 hover:text-slate-300 transition-colors"
+                className="text-xs font-semibold text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition-colors"
               >
                 Return to Student Portal
               </button>
@@ -155,38 +177,38 @@ const Login = () => {
         ) : isBypassMode ? (
           <form className="mt-8 space-y-6" onSubmit={handleMockStudentLogin}>
             <div className="text-center">
-              <span className="px-3.5 py-1 text-xs font-bold text-emerald-400 bg-emerald-400/10 rounded-full border border-emerald-400/20 tracking-wide uppercase">
+              <span className="px-3.5 py-1 text-xs font-bold text-emerald-600 bg-emerald-500/10 dark:text-emerald-400 dark:bg-emerald-400/10 rounded-full border border-emerald-200 dark:border-emerald-400/20 tracking-wide uppercase">
                 Developer Bypass Active
               </span>
             </div>
             
             {/* Terminal Styling for bypass form */}
-            <div className="bg-slate-950/90 border border-slate-800 rounded-2xl p-5 font-mono text-xs text-indigo-300 space-y-4 shadow-inner">
-              <div className="flex items-center gap-2 pb-2.5 border-b border-slate-900 text-slate-500">
-                <Terminal className="w-4 h-4 text-emerald-400 animate-pulse" />
+            <div className="bg-slate-900/50 dark:bg-slate-950/90 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 font-mono text-xs text-slate-700 dark:text-indigo-300 space-y-4 shadow-inner theme-transition">
+              <div className="flex items-center gap-2 pb-2.5 border-b border-slate-200 dark:border-slate-900 text-slate-400 dark:text-slate-500">
+                <Terminal className="w-4 h-4 text-emerald-500 dark:text-emerald-400 animate-pulse" />
                 <span>MOCK_STUDENT_BYPASS_SHELL</span>
               </div>
               
               <div className="space-y-3">
                 <div>
-                  <label className="block text-slate-500 mb-1.5">&gt; INPUT_STUDENT_NAME:</label>
+                  <label className="block text-slate-500 dark:text-slate-500 mb-1.5">&gt; INPUT_STUDENT_NAME:</label>
                   <input
                     type="text"
                     required
                     disabled={loading}
-                    className="w-full bg-slate-900/60 border border-slate-850 px-3.5 py-2.5 rounded-xl text-white font-mono placeholder-slate-700 focus:outline-none focus:border-emerald-500/50 neon-border-indigo text-xs"
+                    className="w-full bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-850 px-3.5 py-2.5 rounded-xl text-slate-900 dark:text-white font-mono placeholder-slate-300 dark:placeholder-slate-700 focus:outline-none focus:border-emerald-500/50 neon-border-indigo text-xs transition-colors"
                     placeholder="Enter Student Name..."
                     value={studentName}
                     onChange={(e) => setStudentName(e.target.value)}
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-500 mb-1.5">&gt; INPUT_STUDENT_EMAIL:</label>
+                  <label className="block text-slate-500 dark:text-slate-500 mb-1.5">&gt; INPUT_STUDENT_EMAIL:</label>
                   <input
                     type="email"
                     required
                     disabled={loading}
-                    className="w-full bg-slate-900/60 border border-slate-850 px-3.5 py-2.5 rounded-xl text-white font-mono placeholder-slate-700 focus:outline-none focus:border-emerald-500/50 neon-border-indigo text-xs"
+                    className="w-full bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-850 px-3.5 py-2.5 rounded-xl text-slate-900 dark:text-white font-mono placeholder-slate-300 dark:placeholder-slate-700 focus:outline-none focus:border-emerald-500/50 neon-border-indigo text-xs transition-colors"
                     placeholder="Enter Student Email..."
                     value={studentEmail}
                     onChange={(e) => setStudentEmail(e.target.value)}
@@ -199,7 +221,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-3 px-4 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/10 transition-all hover:scale-[1.02] active:scale-[0.98] duration-200 text-sm"
+                className="w-full flex justify-center py-3.5 px-4 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/10 transition-all hover:scale-[1.02] active:scale-[0.98] duration-200 text-sm"
               >
                 {loading ? "Allocating Mock Profile..." : "Execute Bypass & Log In"}
               </button>
@@ -212,7 +234,7 @@ const Login = () => {
                   setIsAdminMode(false);
                   setIsBypassMode(false);
                 }}
-                className="text-xs font-semibold text-slate-500 hover:text-slate-300 transition-colors"
+                className="text-xs font-semibold text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition-colors"
               >
                 Return to Student Portal
               </button>
@@ -227,9 +249,9 @@ const Login = () => {
                 type="button"
                 onClick={() => handleGoogleLogin()}
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-3 py-3.5 px-5 rounded-xl text-slate-300 hover:text-white font-semibold bg-slate-950 hover:bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 shadow-lg shadow-black/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] group relative overflow-hidden focus:outline-none"
+                className="w-full flex items-center justify-center gap-3 py-3.5 px-5 rounded-xl text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white font-bold bg-white dark:bg-slate-950 hover:bg-slate-50 dark:hover:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 dark:hover:border-indigo-500/50 shadow-md dark:shadow-lg dark:shadow-black/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] group relative overflow-hidden focus:outline-none"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 dark:from-indigo-500/10 dark:to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
                 <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 relative z-10" viewBox="0 0 24 24">
                   <path
                     fill="#4285F4"
@@ -253,9 +275,9 @@ const Login = () => {
             </div>
             
             <div className="w-full flex items-center justify-between gap-4 py-2">
-              <div className="flex-1 h-px bg-slate-800" />
-              <span className="text-[10px] uppercase font-bold tracking-widest text-slate-600">Developer Options</span>
-              <div className="flex-1 h-px bg-slate-800" />
+              <div className="flex-1 h-px bg-slate-200 dark:bg-slate-800" />
+              <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-600">Developer Options</span>
+              <div className="flex-1 h-px bg-slate-200 dark:bg-slate-800" />
             </div>
 
             {/* Quick Developer Bypass Links */}
@@ -263,7 +285,7 @@ const Login = () => {
               <button
                 type="button"
                 onClick={() => setIsBypassMode(true)}
-                className="flex items-center justify-center text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors"
+                className="flex items-center justify-center text-xs font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 transition-colors"
               >
                 <Sparkles className="w-4 h-4 mr-1.5" /> Developer Bypass
               </button>
@@ -271,7 +293,7 @@ const Login = () => {
               <button
                 type="button"
                 onClick={() => setIsAdminMode(true)}
-                className="flex items-center justify-center text-xs font-semibold text-slate-500 hover:text-slate-300 transition-colors"
+                className="flex items-center justify-center text-xs font-semibold text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 transition-colors"
               >
                 <ShieldUser className="w-4 h-4 mr-1.5" /> Admin Console
               </button>
@@ -280,7 +302,7 @@ const Login = () => {
         )}
         
         {/* Bottom decorative academic note */}
-        <div className="pt-6 mt-6 border-t border-slate-800/80 text-[10px] text-center text-slate-500 flex items-center justify-center gap-1.5">
+        <div className="pt-6 mt-6 border-t border-slate-200 dark:border-slate-800/80 text-[10px] text-center text-slate-400 dark:text-slate-500 flex items-center justify-center gap-1.5">
           <AlertCircle className="w-3.5 h-3.5 text-indigo-500/50" />
           <span>Authorized student and developer console only.</span>
         </div>

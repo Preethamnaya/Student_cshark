@@ -4,12 +4,19 @@
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 antialiased;
+    @apply transition-colors duration-300 antialiased selection:bg-indigo-500 selection:text-white;
   }
 }
 
-/* Custom Premium HSL Glow & Keyframe Animations */
+/* Dynamic Dark & Light Rich Theme Transitions */
+.theme-transition {
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              color 0.3s ease,
+              box-shadow 0.4s ease;
+}
 
+/* Custom Keyframe Animations for Floating Blobs & Logos */
 @keyframes float {
   0%, 100% {
     transform: translateY(0px) scale(1);
@@ -29,6 +36,27 @@
   50% {
     opacity: 0.35;
     transform: scale(1.15);
+  }
+}
+
+@keyframes blob-drift-1 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+@keyframes blob-drift-2 {
+  0%, 100% {
+    transform: translate(0px, 0px) scale(1.1);
+  }
+  50% {
+    transform: translate(-40px, 40px) scale(0.95);
   }
 }
 
@@ -81,6 +109,15 @@
   animation: pulse-slow 12s ease-in-out infinite;
 }
 
+.animate-blob-1 {
+  animation: blob-drift-1 15s ease-in-out infinite;
+}
+
+.animate-blob-2 {
+  animation: blob-drift-2 18s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
 .animate-welcome-in {
   animation: welcome-enter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
@@ -93,16 +130,28 @@
   animation: rotate-slow 20s linear infinite;
 }
 
+/* Frosted glass cards adaptively styled for light and dark themes */
+.glass-panel {
+  @apply backdrop-blur-xl border theme-transition;
+  @apply bg-white/70 border-slate-200/80 shadow-md shadow-slate-100/40;
+  @apply dark:bg-slate-900/40 dark:border-slate-800/60 dark:shadow-none;
+}
+
+.glass-panel-hover {
+  @apply hover:bg-white hover:border-slate-300 hover:shadow-lg hover:scale-[1.01] duration-300 transition-all;
+  @apply dark:hover:bg-slate-900/60 dark:hover:border-indigo-500/40 dark:hover:shadow-indigo-500/5 dark:hover:scale-[1.01];
+}
+
+/* Premium glows for widgets */
 .glass-glow-indigo {
   box-shadow: 0 0 40px -10px rgba(99, 102, 241, 0.15);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-glow-indigo:hover {
-  box-shadow: 0 0 50px 0px rgba(99, 102, 241, 0.35);
+  box-shadow: 0 0 50px 0px rgba(99, 102, 241, 0.3);
   border-color: rgba(99, 102, 241, 0.6);
   transform: translateY(-6px) scale(1.02);
-  background-color: rgba(15, 23, 42, 0.7);
 }
 
 .glass-glow-emerald {
@@ -114,7 +163,6 @@
   box-shadow: 0 0 50px 0px rgba(16, 185, 129, 0.35);
   border-color: rgba(16, 185, 129, 0.6);
   transform: translateY(-6px) scale(1.02);
-  background-color: rgba(15, 23, 42, 0.7);
 }
 
 .glass-glow-amber {
@@ -126,7 +174,6 @@
   box-shadow: 0 0 50px 0px rgba(245, 158, 11, 0.35);
   border-color: rgba(245, 158, 11, 0.6);
   transform: translateY(-6px) scale(1.02);
-  background-color: rgba(15, 23, 42, 0.7);
 }
 
 .neon-border-indigo {
@@ -136,15 +183,5 @@
 .neon-border-indigo:focus {
   border-color: rgba(99, 102, 241, 0.8);
   box-shadow: 0 0 15px rgba(99, 102, 241, 0.4), inset 0 0 5px rgba(99, 102, 241, 0.2);
-  outline: none;
-}
-
-.neon-border-purple {
-  transition: all 0.3s ease;
-}
-
-.neon-border-purple:focus {
-  border-color: rgba(168, 85, 247, 0.8);
-  box-shadow: 0 0 15px rgba(168, 85, 247, 0.4), inset 0 0 5px rgba(168, 85, 247, 0.2);
   outline: none;
 }

@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext, useRef } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { ThemeContext } from '../context/ThemeContext';
+import ThemeToggle from '../components/ThemeToggle';
 import { API_BASE_URL } from '../config';
 import { 
   ArrowLeft, 
@@ -24,6 +26,7 @@ const ModuleView = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   
   const [module, setModule] = useState(null);
   const [activeVideoIdx, setActiveVideoIdx] = useState(0);
@@ -32,7 +35,6 @@ const ModuleView = () => {
   const [currentTime, setCurrentTime] = useState(0);
   const [videoDuration, setVideoDuration] = useState(120); // Default 120 seconds for demo simulation speed
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
-  const activeVideo = module?.videos?.[activeVideoIdx];
   
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
@@ -40,6 +42,7 @@ const ModuleView = () => {
   const [submittedAnswers, setSubmittedAnswers] = useState({});
   
   const timerRef = useRef(null);
+  const activeVideo = module?.videos?.[activeVideoIdx];
 
   useEffect(() => {
     fetchModule();
@@ -192,7 +195,7 @@ const ModuleView = () => {
     }
   };
 
-  if (!module) return <div className="p-8 text-center text-slate-400">Retrieving C# workspace...</div>;
+  if (!module) return <div className="p-8 text-center text-slate-500 dark:text-slate-400 min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950">Retrieving C# workspace...</div>;
 
   // Check if all videos are fully completed
   const totalVideosCount = module.videos?.length || 0;
@@ -234,49 +237,54 @@ const ModuleView = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white pb-16">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans selection:bg-indigo-500 selection:text-white pb-16 transition-colors duration-300 relative overflow-hidden">
       
-      {/* Decorative Blur */}
-      <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-900/10 blur-[120px] pointer-events-none" />
+      {/* Decorative Blur Orbs */}
+      <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/5 dark:bg-indigo-900/10 blur-[120px] pointer-events-none animate-pulse-slow" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-rose-500/5 dark:bg-purple-900/5 blur-[120px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '4s' }} />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 relative z-10">
         
-        {/* Navigation Breadcrumb */}
-        <button 
-          onClick={() => navigate('/dashboard')}
-          className="inline-flex items-center text-slate-400 hover:text-white mb-6 px-4 py-2 bg-slate-900/60 hover:bg-slate-900 border border-slate-800 rounded-xl transition duration-300 font-medium text-xs group"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-0.5 transition-transform" /> Back to Dashboard
-        </button>
+        {/* Navigation Breadcrumb & Theme Toggle Header */}
+        <div className="flex justify-between items-center mb-6">
+          <button 
+            onClick={() => navigate('/dashboard')}
+            className="inline-flex items-center text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white px-4 py-2 bg-white dark:bg-slate-900/60 hover:bg-slate-50 dark:hover:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl transition duration-300 font-semibold text-xs group theme-transition"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-0.5 transition-transform" /> Back to Dashboard
+          </button>
+          
+          <ThemeToggle />
+        </div>
 
         {/* Header Block */}
-        <div className="bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-3xl p-6 sm:p-8 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="glass-panel rounded-3xl p-6 sm:p-8 mb-8 flex flex-col md:flex-row md:items-center justify-between gap-6 relative group overflow-hidden">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                 {module.title}
               </h1>
-              <span className="px-2 py-0.5 text-xs font-semibold text-indigo-400 bg-indigo-400/10 border border-indigo-400/20 rounded-md">
+              <span className="px-2.5 py-0.5 text-xs font-bold text-indigo-600 bg-indigo-50 dark:text-indigo-450 dark:bg-indigo-400/10 border border-indigo-200 dark:border-indigo-400/20 rounded-md">
                 {module.difficulty}
               </span>
             </div>
-            <p className="text-slate-400 text-sm max-w-3xl">
+            <p className="text-slate-500 dark:text-slate-400 text-sm max-w-3xl leading-relaxed">
               {module.description}
             </p>
           </div>
           
           {/* Status Display Card */}
-          <div className="bg-slate-950 border border-slate-800/80 px-5 py-3.5 rounded-2xl flex items-center gap-4 text-xs font-medium self-start md:self-auto shadow-inner">
+          <div className="bg-white/80 dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 px-5 py-3.5 rounded-2xl flex items-center gap-4 text-xs font-semibold self-start md:self-auto shadow-sm dark:shadow-inner theme-transition">
             <div className="flex items-center gap-2">
-              <Tv className="w-4 h-4 text-indigo-400" />
-              <span>Lessons Watched:</span>
-              <span className="text-white font-bold">{completedVideosCount} / {totalVideosCount}</span>
+              <Tv className="w-4 h-4 text-indigo-500 dark:text-indigo-400" />
+              <span>Lessons:</span>
+              <span className="text-slate-800 dark:text-white font-black">{completedVideosCount} / {totalVideosCount}</span>
             </div>
-            <div className="w-px h-6 bg-slate-800" />
+            <div className="w-px h-6 bg-slate-200 dark:bg-slate-850" />
             <div className="flex items-center gap-2">
-              <Cpu className="w-4 h-4 text-emerald-400" />
+              <Cpu className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
               <span>Status:</span>
-              <span className={isAssessmentUnlocked ? "text-emerald-400 font-bold" : "text-amber-400 font-bold"}>
+              <span className={isAssessmentUnlocked ? "text-emerald-550 dark:text-emerald-400 font-black animate-pulse" : "text-amber-550 dark:text-amber-400 font-black"}>
                 {isAssessmentUnlocked ? "Exam Unlocked" : "In Progress"}
               </span>
             </div>
@@ -290,11 +298,11 @@ const ModuleView = () => {
             {/* Custom C# Studio Visual IDE Player (2 Columns) */}
             <div className="lg:col-span-2 flex flex-col space-y-6">
               
-              {/* Premium Player Console */}
-              <div className="bg-slate-900 border border-slate-800/80 rounded-2xl overflow-hidden shadow-2xl">
+              {/* Premium Player Console (Always retains authentic dark coding look) */}
+              <div className="bg-slate-950 border border-slate-900 rounded-2xl overflow-hidden shadow-2xl">
                 
                 {/* Visual Editor Workspace header */}
-                <div className="bg-slate-950 px-4 py-2.5 border-b border-slate-850 flex items-center justify-between text-xs text-slate-400">
+                <div className="bg-slate-950 px-4 py-2.5 border-b border-slate-900 flex items-center justify-between text-xs text-slate-400">
                   <div className="flex items-center gap-2">
                     <Terminal className="w-4 h-4 text-indigo-400 animate-pulse" />
                     <span className="font-mono text-slate-300">C# Compiler Studio IDE — Lesson {activeVideoIdx + 1}</span>
@@ -308,7 +316,7 @@ const ModuleView = () => {
 
                 {/* Embedded YouTube video lesson player */}
                 {activeVideo && (
-                  <div className="relative aspect-video w-full bg-black border-b border-slate-850 overflow-hidden shadow-inner group">
+                  <div className="relative aspect-video w-full bg-black border-b border-slate-900 overflow-hidden shadow-inner group">
                     <iframe
                       src={activeVideo.url ? (activeVideo.url.includes('?') ? `${activeVideo.url}&autoplay=0&controls=1&rel=0&modestbranding=1` : `${activeVideo.url}?autoplay=0&controls=1&rel=0&modestbranding=1`) : ''}
                       title={activeVideo.title}
@@ -320,12 +328,12 @@ const ModuleView = () => {
                 )}
 
                 {/* Simulated C# Code Runner Canvas */}
-                <div className="bg-[#0b0f19] p-6 font-mono text-sm leading-relaxed overflow-x-auto min-h-[220px] max-h-[300px] border-b border-slate-850 text-indigo-300 shadow-inner">
+                <div className="bg-[#0b0f19] p-6 font-mono text-sm leading-relaxed overflow-x-auto min-h-[220px] max-h-[300px] border-b border-slate-900 text-indigo-300 shadow-inner">
                   <pre className="text-xs sm:text-sm">{getSimulatedCode()}</pre>
                 </div>
 
                 {/* Mock Output Terminal */}
-                <div className="bg-black/90 p-4 font-mono text-xs text-emerald-400 min-h-[90px] border-b border-slate-850 overflow-y-auto">
+                <div className="bg-black/90 p-4 font-mono text-xs text-emerald-400 min-h-[90px] border-b border-slate-900 overflow-y-auto">
                   <span className="text-slate-500 font-bold block mb-1">=== RUNTIME COMPILER OUTPUT ===</span>
                   <pre className="whitespace-pre-wrap">{getSimulatedOutput()}</pre>
                 </div>
@@ -340,7 +348,7 @@ const ModuleView = () => {
                     {/* Scrubbing timeline */}
                     <div 
                       onClick={handleTimelineClick}
-                      className="flex-1 bg-slate-800 hover:bg-slate-700 h-2 rounded-full cursor-pointer relative transition-colors"
+                      className="flex-1 bg-slate-900 hover:bg-slate-800 h-2 rounded-full cursor-pointer relative transition-colors"
                     >
                       {/* Already Watched Progress indicator */}
                       <div 
@@ -393,10 +401,10 @@ const ModuleView = () => {
               </div>
 
               {/* Locked/Unlocked Alert Info panel */}
-              <div className="bg-slate-900/30 border border-slate-800/80 p-5 rounded-2xl flex items-start gap-4 shadow-sm">
-                <Info className="w-5 h-5 text-indigo-400 mt-0.5 flex-shrink-0" />
-                <div className="space-y-1.5 text-xs text-slate-400">
-                  <h4 className="font-bold text-white text-sm">Professional C# Standards Watch Policy</h4>
+              <div className="glass-panel p-5 rounded-2xl flex items-start gap-4 shadow-sm">
+                <Info className="w-5 h-5 text-indigo-500 dark:text-indigo-450 mt-0.5 flex-shrink-0" />
+                <div className="space-y-1.5 text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                  <h4 className="font-bold text-slate-800 dark:text-white text-sm">Professional C# Standards Watch Policy</h4>
                   <p>
                     Scrubbing or forwarding beyond the watched threshold is automatically locked. You must play and complete the full simulation to log the target credit hours (representing 80-90 hours for the entire developer program).
                   </p>
@@ -405,9 +413,9 @@ const ModuleView = () => {
             </div>
 
             {/* Side-panel: Video Lesson Outline (1 Column) */}
-            <div className="bg-slate-900 border border-slate-800/80 rounded-3xl p-6 flex flex-col shadow-xl">
-              <h2 className="text-lg font-bold tracking-tight text-white mb-4 pb-3 border-b border-slate-800/80 flex items-center gap-2">
-                <Tv className="w-5 h-5 text-indigo-400" /> Module Syllabus
+            <div className="glass-panel rounded-3xl p-6 flex flex-col shadow-xl">
+              <h2 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white mb-4 pb-3 border-b border-slate-200 dark:border-slate-800/80 flex items-center gap-2">
+                <Tv className="w-5 h-5 text-indigo-500 dark:text-indigo-400" /> Module Syllabus
               </h2>
 
               {/* Videos listing */}
@@ -430,17 +438,17 @@ const ModuleView = () => {
                     <div 
                       key={index}
                       onClick={() => handleVideoSelect(index)}
-                      className={`p-4 rounded-2xl border transition duration-300 flex items-center justify-between gap-4 select-none ${isActive ? 'bg-indigo-500/10 border-indigo-500/40 text-white' : 'bg-slate-950/60 border-slate-900 text-slate-400 hover:border-slate-800 hover:text-slate-200'} ${isLocked ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                      className={`p-4 rounded-2xl border transition duration-300 flex items-center justify-between gap-4 select-none ${isActive ? 'bg-indigo-500/5 border-indigo-500/40 text-slate-900 dark:text-white' : 'bg-white/40 dark:bg-slate-950/60 border-slate-200 dark:border-slate-900 text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-800 hover:text-slate-800 dark:hover:text-slate-200'} ${isLocked ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'} theme-transition`}
                     >
                       <div className="space-y-1 flex-1">
-                        <h4 className={`text-sm font-semibold truncate ${isActive ? 'text-white' : 'text-slate-200'}`}>
+                        <h4 className={`text-sm font-bold truncate ${isActive ? 'text-indigo-600 dark:text-white' : 'text-slate-800 dark:text-slate-200'}`}>
                           {vid.title}
                         </h4>
-                        <p className="text-[11px] text-slate-500">Duration: {vid.durationMinutes} minutes</p>
+                        <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium">Duration: {vid.durationMinutes} minutes</p>
                         
                         {/* Inline progress bar */}
                         {!isLocked && (
-                          <div className="w-full bg-slate-800 h-1 rounded-full mt-2 overflow-hidden">
+                          <div className="w-full bg-slate-200 dark:bg-slate-800 h-1 rounded-full mt-2 overflow-hidden">
                             <div 
                               className={`h-1 rounded-full transition-all duration-300 ${isCompleted ? 'bg-emerald-500' : 'bg-indigo-500'}`}
                               style={{ width: `${currentPercent}%` }}
@@ -452,11 +460,11 @@ const ModuleView = () => {
                       {/* Locking/unlocking state icon */}
                       <div>
                         {isLocked ? (
-                          <Lock className="w-4 h-4 text-slate-600" />
+                          <Lock className="w-4 h-4 text-slate-350 dark:text-slate-600" />
                         ) : isCompleted ? (
-                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
                         ) : (
-                          <Unlock className="w-4 h-4 text-slate-500" />
+                          <Unlock className="w-4 h-4 text-slate-400 dark:text-slate-500" />
                         )}
                       </div>
                     </div>
@@ -476,7 +484,7 @@ const ModuleView = () => {
                 ) : (
                   <button
                     disabled
-                    className="w-full py-3.5 bg-slate-950 border border-slate-900 text-slate-600 rounded-2xl font-semibold text-sm cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full py-3.5 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-900 text-slate-400 dark:text-slate-650 rounded-2xl font-semibold text-sm cursor-not-allowed flex items-center justify-center gap-2 theme-transition"
                   >
                     <Lock className="w-4 h-4" /> Watch all lessons to unlock exam
                   </button>
@@ -489,14 +497,14 @@ const ModuleView = () => {
         ) : (
           
           /* Technical Tricky Assessment Panel */
-          <div className="max-w-4xl mx-auto bg-slate-900 border border-slate-800/80 rounded-3xl overflow-hidden shadow-2xl">
+          <div className="max-w-4xl mx-auto glass-panel rounded-3xl overflow-hidden shadow-2xl relative">
             
             {/* Header info */}
-            <div className="p-6 bg-slate-950 border-b border-slate-850 flex items-center justify-between">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <Cpu className="w-5 h-5 text-indigo-400" /> Technical Assessment Console
+            <div className="p-6 bg-white/40 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-850 flex items-center justify-between theme-transition">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <Cpu className="w-5 h-5 text-indigo-550 dark:text-indigo-400" /> Technical Assessment Console
               </h2>
-              <span className="text-xs font-semibold px-3 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-md">
+              <span className="text-xs font-semibold px-3 py-1 bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-500/20 rounded-md">
                 75% score required to pass
               </span>
             </div>
@@ -512,13 +520,13 @@ const ModuleView = () => {
             >
               {result ? (
                 /* Scoring report block */
-                <div className="space-y-8">
-                  <div className={`p-6 rounded-2xl border ${result.passed ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300' : 'bg-rose-500/10 border-rose-500/30 text-rose-300'}`}>
+                <div className="space-y-8 animate-welcome-in">
+                  <div className={`p-6 rounded-2xl border ${result.passed ? 'bg-emerald-500/10 border-emerald-200 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-300' : 'bg-rose-500/10 border-rose-200 dark:border-rose-500/30 text-rose-700 dark:text-rose-300'}`}>
                     <h3 className="text-2xl font-black mb-2 flex items-center gap-2">
-                      {result.passed ? <CheckCircle2 className="w-7 h-7 text-emerald-400" /> : <XCircle className="w-7 h-7 text-rose-400" />}
+                      {result.passed ? <CheckCircle2 className="w-7 h-7 text-emerald-500 dark:text-emerald-400" /> : <XCircle className="w-7 h-7 text-rose-550 dark:text-rose-400" />}
                       {result.passed ? 'Certification Requirements Achieved!' : 'Platform Requirements Not Met'}
                     </h3>
-                    <p className="text-base text-slate-300 mt-2">
+                    <p className="text-base text-slate-700 dark:text-slate-300 mt-2 leading-relaxed">
                       Assessment complete. You answered <strong>{result.correctCount}</strong> out of <strong>{result.totalQuestions}</strong> questions correctly, achieving a score of <strong>{result.score}%</strong>.
                     </p>
                     
@@ -532,40 +540,40 @@ const ModuleView = () => {
                         >
                           <Award className="w-5 h-5" /> Download Professional Certificate
                         </a>
-                        <span className="text-xs text-slate-400">Your browser has automatically triggered the PDF file transfer.</span>
+                        <span className="text-xs text-slate-500 dark:text-slate-400">Your browser has automatically triggered the PDF file transfer.</span>
                       </div>
                     )}
                   </div>
 
                   {/* Tricky Educational Explanations Segment */}
                   <div className="space-y-6">
-                    <h4 className="text-lg font-bold text-white border-b border-slate-800 pb-2">Technical Analysis & Explanations</h4>
+                    <h4 className="text-lg font-bold text-slate-800 dark:text-white border-b border-slate-200 dark:border-slate-850 pb-2 theme-transition">Technical Analysis & Explanations</h4>
                     
                     {result.questions?.map((q, idx) => {
                       const isCorrect = submittedAnswers[idx] === q.correctAnswer;
                       return (
-                        <div key={idx} className="p-6 bg-slate-950 border border-slate-800/80 rounded-2xl space-y-4">
+                        <div key={idx} className="p-6 bg-white/40 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded-2xl space-y-4 theme-transition">
                           <div className="flex items-start gap-3">
                             {isCorrect ? (
-                              <CheckCircle2 className="w-5 h-5 text-emerald-400 mt-1 flex-shrink-0" />
+                              <CheckCircle2 className="w-5 h-5 text-emerald-500 dark:text-emerald-400 mt-1 flex-shrink-0" />
                             ) : (
-                              <XCircle className="w-5 h-5 text-rose-400 mt-1 flex-shrink-0" />
+                              <XCircle className="w-5 h-5 text-rose-500 dark:text-rose-400 mt-1 flex-shrink-0" />
                             )}
                             <div className="space-y-1">
-                              <p className="font-semibold text-slate-200">{idx + 1}. {q.questionText}</p>
-                              <div className="text-xs mt-2 space-y-1.5">
-                                <p className="text-slate-400">Your selection: <span className={isCorrect ? "text-emerald-400" : "text-rose-400"}>{submittedAnswers[idx]}</span></p>
-                                {!isCorrect && <p className="text-slate-400">Correct standard: <span className="text-emerald-400 font-bold">{q.correctAnswer}</span></p>}
+                              <p className="font-bold text-slate-800 dark:text-slate-200 leading-relaxed">{idx + 1}. {q.questionText}</p>
+                              <div className="text-xs mt-2 space-y-1.5 font-medium">
+                                <p className="text-slate-500 dark:text-slate-400">Your selection: <span className={isCorrect ? "text-emerald-600 dark:text-emerald-400 font-bold" : "text-rose-600 dark:text-rose-400 font-bold"}>{submittedAnswers[idx]}</span></p>
+                                {!isCorrect && <p className="text-slate-500 dark:text-slate-400">Correct standard: <span className="text-emerald-600 dark:text-emerald-400 font-black">{q.correctAnswer}</span></p>}
                               </div>
                             </div>
                           </div>
 
                           {/* Tricky explanation */}
-                          <div className="p-4 bg-slate-900 border-l-4 border-indigo-500 rounded-r-xl space-y-1">
-                            <h5 className="text-xs font-bold text-indigo-400 flex items-center gap-1">
+                          <div className="p-4 bg-white dark:bg-slate-900 border-l-4 border-indigo-500 rounded-r-xl space-y-1 shadow-sm theme-transition">
+                            <h5 className="text-xs font-bold text-indigo-600 dark:text-indigo-400 flex items-center gap-1">
                               <Info className="w-3.5 h-3.5" /> Technical Explanation:
                             </h5>
-                            <p className="text-xs text-slate-300 whitespace-pre-wrap">{q.explanation}</p>
+                            <p className="text-xs text-slate-650 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">{q.explanation}</p>
                           </div>
                         </div>
                       );
@@ -579,14 +587,14 @@ const ModuleView = () => {
                           setResult(null);
                           setAnswers({});
                         }}
-                        className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl transition font-medium text-sm"
+                        className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl transition font-bold text-sm hover:scale-[1.02] active:scale-[0.98] duration-200 shadow-md shadow-indigo-500/10"
                       >
                         Retake Technical Exam
                       </button>
                     )}
                     <button 
                       onClick={() => navigate('/dashboard')}
-                      className="px-6 py-2.5 bg-slate-850 hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-800 transition font-medium text-sm"
+                      className="px-6 py-2.5 bg-white hover:bg-slate-50 dark:bg-slate-850 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-800 transition font-bold text-sm hover:scale-[1.02] active:scale-[0.98] theme-transition"
                     >
                       Return to Dashboard
                     </button>
@@ -596,8 +604,8 @@ const ModuleView = () => {
                 /* Interactive quiz taking console */
                 <form onSubmit={handleSubmit} className="space-y-8">
                   {module.questions.map((q, qIndex) => (
-                    <div key={qIndex} className="p-6 bg-slate-950 border border-slate-800/80 rounded-2xl">
-                      <p className="font-bold text-slate-200 text-base mb-4 leading-relaxed">
+                    <div key={qIndex} className="p-6 bg-white/40 dark:bg-slate-950 border border-slate-200 dark:border-slate-850 rounded-2xl theme-transition">
+                      <p className="font-bold text-slate-800 dark:text-slate-200 text-base mb-4 leading-relaxed">
                         {qIndex + 1}. {q.questionText}
                       </p>
                       
@@ -607,7 +615,7 @@ const ModuleView = () => {
                           return (
                             <label 
                               key={oIndex} 
-                              className={`flex items-center p-3.5 border rounded-xl cursor-pointer transition select-none ${isSelected ? 'bg-indigo-500/5 border-indigo-500 text-white' : 'bg-slate-900 border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white'}`}
+                              className={`flex items-center p-3.5 border rounded-xl cursor-pointer transition select-none ${isSelected ? 'bg-indigo-500/5 border-indigo-500 text-slate-900 dark:text-white font-bold shadow-sm' : 'bg-white/40 dark:bg-slate-900 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white font-medium'} theme-transition`}
                             >
                               <input 
                                 type="radio" 
@@ -615,7 +623,7 @@ const ModuleView = () => {
                                 value={opt}
                                 checked={isSelected}
                                 onChange={() => handleOptionChange(qIndex, opt)}
-                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-800"
+                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900"
                               />
                               <span className="ml-3 text-sm">{opt}</span>
                             </label>
@@ -629,7 +637,7 @@ const ModuleView = () => {
                     <button 
                       type="button"
                       onClick={() => setShowAssessment(false)}
-                      className="px-6 py-3 bg-slate-900 border border-slate-800 hover:border-slate-700 hover:bg-slate-800 text-slate-300 rounded-xl transition duration-200 font-medium text-sm"
+                      className="px-6 py-3 bg-white hover:bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-750 text-slate-600 dark:text-slate-300 rounded-xl transition duration-200 font-bold text-sm theme-transition"
                     >
                       Back to Video Player
                     </button>
