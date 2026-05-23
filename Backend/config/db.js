@@ -7,8 +7,10 @@ const connectDB = async () => {
     return cachedConnection;
   }
 
-  if (!process.env.MONGODB_URI) {
-    console.error('Error: MONGODB_URI is not defined in the environment variables.');
+  const dbUri = process.env.MONGODB_URI || 'mongodb+srv://preetham:mongodb123@ourproject.lh011ok.mongodb.net/student_cshark?retryWrites=true&w=majority&appName=ourproject';
+
+  if (!dbUri) {
+    console.error('Error: MONGODB_URI is not defined in the environment variables and no fallback exists.');
     if (process.env.VERCEL) {
       throw new Error('MONGODB_URI is missing');
     }
@@ -16,7 +18,7 @@ const connectDB = async () => {
   }
 
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
+    const conn = await mongoose.connect(dbUri);
     cachedConnection = conn;
     console.log(`MongoDB Connected: ${conn.connection.host}`);
     return conn;

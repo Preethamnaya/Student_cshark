@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwtkey_change_me_in_production';
+
 module.exports = function(req, res, next) {
   // Get token from header
   const token = req.header('x-auth-token');
@@ -11,7 +13,7 @@ module.exports = function(req, res, next) {
 
   // Verify token
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded; // { userId, role, status } or { role, status } for admin
     next();
   } catch (err) {

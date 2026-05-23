@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/User');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwtkey_change_me_in_production';
+
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // POST /api/auth/google
@@ -56,7 +58,7 @@ router.post('/google', async (req, res) => {
     // Generate JWT
     const jwtToken = jwt.sign(
       { userId: user._id, role: user.role, status: user.status },
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: '1d' }
     );
 
@@ -93,7 +95,7 @@ router.post('/mock-student', async (req, res) => {
     // Generate JWT
     const jwtToken = jwt.sign(
       { userId: user._id, role: user.role, status: user.status },
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: '1d' }
     );
 
@@ -117,7 +119,7 @@ router.post('/admin', async (req, res) => {
     // Generate JWT for admin
     const jwtToken = jwt.sign(
       { role: 'admin', status: 'approved' },
-      process.env.JWT_SECRET,
+      JWT_SECRET,
       { expiresIn: '1d' }
     );
     return res.json({ token: jwtToken, user: { role: 'admin', name: 'Administrator' } });
