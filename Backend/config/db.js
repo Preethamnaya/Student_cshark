@@ -18,9 +18,11 @@ const connectDB = async () => {
   }
 
   try {
-    const conn = await mongoose.connect(dbUri);
+    const conn = await mongoose.connect(dbUri, {
+      dbName: 'student_cshark'
+    });
     cachedConnection = conn;
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    console.log(`MongoDB Connected: ${conn.connection.host} (Database: ${conn.connection.name})`);
     return conn;
   } catch (error) {
     console.error(`MongoDB Connection Error: ${error.message}`);
